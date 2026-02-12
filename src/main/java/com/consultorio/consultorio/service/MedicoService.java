@@ -1,5 +1,7 @@
 package com.consultorio.consultorio.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,10 @@ public class MedicoService {
         repoMedico.save(medico);
         return true;
 
+    }
+
+    public List<Medico> listar(){
+        return repoMedico.findAll();
     }
 
 }

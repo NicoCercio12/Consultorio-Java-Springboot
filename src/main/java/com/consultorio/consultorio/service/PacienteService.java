@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.consultorio.consultorio.model.Paciente;
 import com.consultorio.consultorio.repository.PacienteRepository;
+import java.util.List;
 
 
 @Service
@@ -12,7 +13,7 @@ public class PacienteService {
     @Autowired
     private PacienteRepository repoPaciente;
 
-    public boolean agregarPaciente(Paciente paciente){
+    public boolean agregarPaciente(Paciente paciente){ //Crear Paciente
         if(repoPaciente.findfindByDNI(paciente.getDni()).isPresent()){
             throw new RuntimeException("El paciente ya existe");
         }
@@ -21,4 +22,10 @@ public class PacienteService {
         return true;
 
     }
+
+    public List<Paciente> listar(){ //Necesario para listar a todos los pacientes
+        return repoPaciente.findAll();
+            
+    }
 }
+

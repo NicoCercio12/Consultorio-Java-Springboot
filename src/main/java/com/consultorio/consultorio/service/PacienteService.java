@@ -14,7 +14,7 @@ public class PacienteService {
     private PacienteRepository repoPaciente;
 
     public boolean agregarPaciente(Paciente paciente){ //Crear Paciente
-        if(repoPaciente.findfindByDNI(paciente.getDni()).isPresent()){
+        if(repoPaciente.findByDNI(paciente.getDni()).isPresent()){
             throw new RuntimeException("El paciente ya existe");
         }
 
@@ -23,9 +23,22 @@ public class PacienteService {
 
     }
 
+    public Paciente buscarPacientePorDni(Long dni){
+        return repoPaciente.findByDNI(dni).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+
+        //Implementar si esta activo o no
+
+    }
+
+    public Paciente buscarPacientePorId(Long id){
+        return repoPaciente.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+    }
+
     public List<Paciente> listar(){ //Necesario para listar a todos los pacientes
         return repoPaciente.findAll();
             
     }
+
+    
 }
 

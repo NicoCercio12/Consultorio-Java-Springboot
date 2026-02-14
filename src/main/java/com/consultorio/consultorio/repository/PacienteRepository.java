@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     Optional<Paciente> findByDNI(long dni); //Es opcional, pero me sirve para buscar por dni
+    //Optional<Paciente> deleteByDNI(Long dni); No es lo mejor, pero lo dejo ahi
 
 }

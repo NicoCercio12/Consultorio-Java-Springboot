@@ -9,7 +9,7 @@ import com.consultorio.consultorio.model.Medico;
 
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
-    List<Turno> findByFecha(LocalDateTime fechaHora);
+    List<Turno> findByFechaHora(LocalDateTime fechaHora);
 
     boolean existsByMedicoAndFechaAndHora(Medico medico, LocalDateTime fechaHora);
 

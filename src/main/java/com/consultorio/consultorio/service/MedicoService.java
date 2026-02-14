@@ -3,6 +3,9 @@ package com.consultorio.consultorio.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.consultorio.consultorio.dto.MedicoRequestDTO;
+import com.consultorio.consultorio.dto.MedicoResponseDTO;
 import com.consultorio.consultorio.model.Medico;
 import com.consultorio.consultorio.repository.MedicoRepository;
 
@@ -12,83 +15,96 @@ public class MedicoService {
     @Autowired
     private MedicoRepository repoMedico;
 
-    public boolean agregarMedico(Medico medico){
-        if(repoMedico.findByMatricula(medico.getMatricula()).isPresent()){
-            throw new RuntimeException("Ya existe el medico");
-        }
+   //Crear medico
 
-        repoMedico.save(medico);
-        return true;
+   public void agregarMedico(MedicoRequestDTO dtoMedico) {
 
+    if(repoMedico.findByDni(dtoMedico.getDni()).isPresent()){
+        throw new RuntimeException("El medico ya existe");
     }
 
-    public Medico traerMedicoPorMatricula(String matricula){
-        return repoMedico.findByMatricula(matricula).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+    Medico medico = new Medico();
+    medico.setNombre(dtoMedico.getNombre());
+    medico.setApellido(dtoMedico.getApellido());
+    medico.setDni(dtoMedico.getDni());
+    medico.setNroTelefono(dtoMedico.getNroTelefono());
+    medico.setMatricula(dtoMedico.getMatricula());
+    medico.setEspecialidad(dtoMedico.getEspecialidad());
+
+    repoMedico.save(medico);
+
+   }
+
+   //Buscar medico por id 
+
+   public MedicoResponseDTO buscarMedicoPorId(Long id){
+
+    Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+
+    return mapToDTO(medico);
+   
+   }
+
+   //Listar todos los medicos
+
+   public List<MedicoResponseDTO> listar(){
+    return repoMedico.findAll().stream().map(this::mapToDTO).toList();
+   }
+
+   //Modificar medico
+
+   public void modificarMedicoPorId(MedicoRequestDTO dtoMedico, Long id) {
+
+    Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+
+    //Me aseguro de que no esten estos campos vacíos (Recordar buscar una forma menos robusta de hacerlo)
+
+    if(dtoMedico.getNombre() != null){
+        dtoMedico.setNombre(medico.getNombre());
     }
 
-    public Medico BuscarMedicoPorId(Long id) {
-        return repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no econtrado"));
-
+    if(dtoMedico.getApellido() != null){
+        dtoMedico.setApellido(medico.getApellido());
     }
 
-    public Medico buscarMedicoPorDni(Long dni){
-        return repoMedico.findByDni(dni).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+    if(dtoMedico.getDni() != null){
+        dtoMedico.setDni(medico.getDni());
     }
 
-    public List<Medico> listarPorEspecialidad(String especialidad){
-        
-        List<Medico> medicoEspecialidad = repoMedico.findByEspecialidad(especialidad);
-
-        if(medicoEspecialidad.isEmpty()){
-            throw new RuntimeException("No hay medicos con esa especialidad");
-        }
-
-        return medicoEspecialidad;
-
+    if(dtoMedico.getNroTelefono() != null) {
+        dtoMedico.setNroTelefono(medico.getNroTelefono());
     }
 
-    public List<Medico> listar(){
-        return repoMedico.findAll();
+    if(dtoMedico.getMatricula() != null){
+        dtoMedico.setMatricula(medico.getMatricula());
     }
 
-    //Puse tres opciones para actualizar (no se que tan necesario sea, pero aun asi :p)
-
-    public Medico actualizarMedicoPorMatricula(String matricula, Medico medicoActualizar){
-       
-       Medico medico = repoMedico.findByMatricula(matricula).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
-
-       medico.setNombre(medicoActualizar.getNombre());
-       medico.setApellido(medicoActualizar.getApellido());
-       medico.setEspecialidad(medicoActualizar.getEspecialidad());
-       medico.setNroTelefono(medicoActualizar.getEspecialidad());
-
-       return repoMedico.save(medico);
-
+    if(dtoMedico.getEspecialidad() != null){
+        dtoMedico.setEspecialidad(medico.getEspecialidad());
     }
 
-    public Medico actualizarMedicoPorDni(Long dni, Medico medicoActualizar) {
+    repoMedico.save(medico);
 
-        Medico medico = repoMedico.findByDni(dni).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+   }
 
-        medico.setNombre(medicoActualizar.getNombre());
-        medico.setApellido(medicoActualizar.getApellido());
-        medico.setEspecialidad(medicoActualizar.getEspecialidad());
-        medico.setNroTelefono(medicoActualizar.getNroTelefono());
+   //Mapper
 
-        return repoMedico.save(medico);
-    }
+   private MedicoResponseDTO mapToDTO(Medico medico){
 
-    public Medico actualizarMedicoPorId(Long id, Medico medicoActualizar){
+    MedicoResponseDTO dtoMedico = new MedicoResponseDTO();
 
-        Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+    dtoMedico.setId(medico.getIdPersona());
+    dtoMedico.setNombre(medico.getNombre());
+    dtoMedico.setApellido(medico.getApellido());
+    dtoMedico.setDni(medico.getDni());
+    dtoMedico.setNroTelefono(medico.getNroTelefono());
+    dtoMedico.setMatricula(medico.getMatricula());
+    dtoMedico.setEspecialidad(medico.getEspecialidad());
 
-        medico.setNombre(medicoActualizar.getNombre());
-        medico.setApellido(medicoActualizar.getApellido());
-        medico.setEspecialidad(medicoActualizar.getEspecialidad());
-        medico.setNroTelefono(medicoActualizar.getNroTelefono());
+    return dtoMedico;
 
-        return repoMedico.save(medico);
-    }
+   }
+
 
 
 

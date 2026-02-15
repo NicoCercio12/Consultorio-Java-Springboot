@@ -11,101 +11,109 @@ import com.consultorio.consultorio.repository.MedicoRepository;
 
 @Service
 public class MedicoService {
-    
+
     @Autowired
     private MedicoRepository repoMedico;
 
-   //Crear medico
+    // Crear medico
 
-   public void agregarMedico(MedicoRequestDTO dtoMedico) {
+    public void agregarMedico(MedicoRequestDTO dtoMedico) {
 
-    if(repoMedico.findByDni(dtoMedico.getDni()).isPresent()){
-        throw new RuntimeException("El medico ya existe");
+        if (repoMedico.findByDni(dtoMedico.getDni()).isPresent()) {
+            throw new RuntimeException("El medico ya existe");
+        }
+
+        Medico medico = new Medico();
+        medico.setNombre(dtoMedico.getNombre());
+        medico.setApellido(dtoMedico.getApellido());
+        medico.setDni(dtoMedico.getDni());
+        medico.setNroTelefono(dtoMedico.getNroTelefono());
+        medico.setMatricula(dtoMedico.getMatricula());
+        medico.setEspecialidad(dtoMedico.getEspecialidad());
+
+        repoMedico.save(medico);
+
     }
 
-    Medico medico = new Medico();
-    medico.setNombre(dtoMedico.getNombre());
-    medico.setApellido(dtoMedico.getApellido());
-    medico.setDni(dtoMedico.getDni());
-    medico.setNroTelefono(dtoMedico.getNroTelefono());
-    medico.setMatricula(dtoMedico.getMatricula());
-    medico.setEspecialidad(dtoMedico.getEspecialidad());
+    // Buscar medico por id
 
-    repoMedico.save(medico);
+    public MedicoResponseDTO buscarMedicoPorId(Long id) {
 
-   }
+        Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
 
-   //Buscar medico por id 
+        return mapToDTO(medico);
 
-   public MedicoResponseDTO buscarMedicoPorId(Long id){
+    }
 
-    Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+    // Listar todos los medicos
 
-    return mapToDTO(medico);
-   
-   }
+    public List<MedicoResponseDTO> listar() {
+        return repoMedico.findAll().stream().map(this::mapToDTO).toList();
+    }
 
-   //Listar todos los medicos
+    // Modificar medico
 
-   public List<MedicoResponseDTO> listar(){
-    return repoMedico.findAll().stream().map(this::mapToDTO).toList();
-   }
+    public void modificarMedicoPorId(MedicoRequestDTO dtoMedico, Long id) {
 
-   //Modificar medico
+        Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
 
-   public void modificarMedicoPorId(MedicoRequestDTO dtoMedico, Long id) {
+        // Me aseguro de que no esten estos campos vacíos (Recordar buscar una forma
+        // menos robusta de hacerlo)
 
-    Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+        if (dtoMedico.getNombre() != null) {
+            dtoMedico.setNombre(medico.getNombre());
+        }
 
-    //Me aseguro de que no esten estos campos vacíos (Recordar buscar una forma menos robusta de hacerlo)
+        if (dtoMedico.getApellido() != null) {
+            dtoMedico.setApellido(medico.getApellido());
+        }
 
-    if(dtoMedico.getNombre() != null){
+        if (dtoMedico.getDni() != null) {
+            dtoMedico.setDni(medico.getDni());
+        }
+
+        if (dtoMedico.getNroTelefono() != null) {
+            dtoMedico.setNroTelefono(medico.getNroTelefono());
+        }
+
+        if (dtoMedico.getMatricula() != null) {
+            dtoMedico.setMatricula(medico.getMatricula());
+        }
+
+        if (dtoMedico.getEspecialidad() != null) {
+            dtoMedico.setEspecialidad(medico.getEspecialidad());
+        }
+
+        repoMedico.save(medico);
+
+    }
+
+    // Eliminar medico por id
+
+    public void eliminarMedicoPorId(Long id) {
+        if (!repoMedico.existsById(id)) {
+            throw new RuntimeException("Medico no encontrado");
+        }
+
+        repoMedico.deleteById(id);
+    }
+
+    // Mapper
+
+    private MedicoResponseDTO mapToDTO(Medico medico) {
+
+        MedicoResponseDTO dtoMedico = new MedicoResponseDTO();
+
+        dtoMedico.setId(medico.getIdPersona());
         dtoMedico.setNombre(medico.getNombre());
-    }
-
-    if(dtoMedico.getApellido() != null){
         dtoMedico.setApellido(medico.getApellido());
-    }
-
-    if(dtoMedico.getDni() != null){
         dtoMedico.setDni(medico.getDni());
-    }
-
-    if(dtoMedico.getNroTelefono() != null) {
         dtoMedico.setNroTelefono(medico.getNroTelefono());
-    }
-
-    if(dtoMedico.getMatricula() != null){
         dtoMedico.setMatricula(medico.getMatricula());
-    }
-
-    if(dtoMedico.getEspecialidad() != null){
         dtoMedico.setEspecialidad(medico.getEspecialidad());
+
+        return dtoMedico;
+
     }
-
-    repoMedico.save(medico);
-
-   }
-
-   //Mapper
-
-   private MedicoResponseDTO mapToDTO(Medico medico){
-
-    MedicoResponseDTO dtoMedico = new MedicoResponseDTO();
-
-    dtoMedico.setId(medico.getIdPersona());
-    dtoMedico.setNombre(medico.getNombre());
-    dtoMedico.setApellido(medico.getApellido());
-    dtoMedico.setDni(medico.getDni());
-    dtoMedico.setNroTelefono(medico.getNroTelefono());
-    dtoMedico.setMatricula(medico.getMatricula());
-    dtoMedico.setEspecialidad(medico.getEspecialidad());
-
-    return dtoMedico;
-
-   }
-
-
-
 
 }

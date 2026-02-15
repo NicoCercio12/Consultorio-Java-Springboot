@@ -59,6 +59,7 @@ public class PacienteController {
 
     //Listar Pacientes
 
+    @GetMapping
     public List<PacienteResponseDTO> listarPacientes(){
         return pacienteService.listar();
     }

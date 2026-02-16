@@ -35,11 +35,19 @@ public class MedicoService {
 
     }
 
+    //Buscar entidad por id
+
+    public Medico buscarEntidadMedicoPorId(Long id){
+
+        return repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+
+    }
+
     // Buscar medico por id
 
     public MedicoResponseDTO buscarMedicoPorId(Long id) {
 
-        Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
+        Medico medico = buscarEntidadMedicoPorId(id);
 
         return mapToDTO(medico);
 

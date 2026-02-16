@@ -19,7 +19,7 @@ public class PacienteService {
     //Agregar/Crear Paciente 
 
     public void agregarPaciente(PacienteRequestDTO dtoPaciente){ //Al parecer, es mejor hacerlo con void
-        if(repoPaciente.findByDNI(dtoPaciente.getDni()).isPresent()){
+        if(repoPaciente.findByDni(dtoPaciente.getDni()).isPresent()){
             throw new RuntimeException("El paciente ya existe");
         }
 
@@ -36,10 +36,16 @@ public class PacienteService {
 
     }
 
+    //Buscar entidad paciente por id
+
+    public Paciente buscarEntidadPacientePorId(Long id){
+        return repoPaciente.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+    }
+
     //Buscar Paciente por id
 
     public PacienteResponseDTO buscarPacientePorId(Long id){
-        Paciente paciente = repoPaciente.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+        Paciente paciente = buscarEntidadPacientePorId(id);
 
         return mapToDTO(paciente);
     }

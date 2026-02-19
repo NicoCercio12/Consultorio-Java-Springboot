@@ -13,6 +13,8 @@ public class PacienteRequestDTO {
     private LocalDate fechaNacimiento;
     private String obraSocial;
 
+    public PacienteRequestDTO(){}
+
     //No hace falta hacer un constructor, no conviene
    
     public String getNombre() {

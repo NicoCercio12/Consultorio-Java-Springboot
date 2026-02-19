@@ -12,6 +12,8 @@ public class MedicoResponseDTO {
     private String matricula;
     private String especialidad;
    
+    public MedicoResponseDTO(){} //agregado por las dudas (?)
+
     public Long getId() {
         return id;
     }

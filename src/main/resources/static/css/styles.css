@@ -1,9 +1,25 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 30px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-input, button {
-    margin: 5px;
-    padding: 5px;
+.card {
+    border-radius: 12px;
+}
+
+
+section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h1 {
+    font-weight: 700;
+}
+
+.list-group-item {
+    border-radius: 6px;
+    margin-bottom: 6px;
 }

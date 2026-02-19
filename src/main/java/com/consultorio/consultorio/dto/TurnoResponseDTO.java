@@ -9,6 +9,8 @@ public class TurnoResponseDTO {
     private Long idMedico;
     private Long idPaciente;
 
+    public TurnoResponseDTO(){}
+
     public Long getIdTurno() {
         return idTurno;
     }

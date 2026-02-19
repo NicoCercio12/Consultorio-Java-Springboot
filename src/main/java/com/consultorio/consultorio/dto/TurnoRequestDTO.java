@@ -8,6 +8,8 @@ public class TurnoRequestDTO {
     private Long idMedico;
     private Long idPaciente;
     
+    public TurnoRequestDTO(){}
+
     public LocalDateTime getFechaHora() {
         return fechaHora;
     }

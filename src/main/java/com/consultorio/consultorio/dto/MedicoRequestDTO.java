@@ -11,6 +11,8 @@ public class MedicoRequestDTO {
     private String matricula;
     private String especialidad;
    
+    public MedicoRequestDTO(){} //Me habia olvidado de agregarlo
+
     public String getNombre() {
         return nombre;
     }

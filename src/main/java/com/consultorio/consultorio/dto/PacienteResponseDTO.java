@@ -14,6 +14,8 @@ public class PacienteResponseDTO {
     private LocalDate fechaNacimiento;
     private String obraSocial;
     
+    public PacienteResponseDTO(){}
+
     public Long getId() {
         return id;
     }

@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.consultorio.consultorio.dto.PacienteRequestDTO;
 import com.consultorio.consultorio.dto.PacienteResponseDTO;
-import com.consultorio.consultorio.dto.PacienteUpdateDTO;
 import java.util.List;
 
 @RestController
@@ -40,10 +40,9 @@ public class PacienteController {
     }
 
     //Endpoint para actualizar paciente por id
-    @PutMapping("/{id}")
-    public ResponseEntity<?> modificarPacientePorId(@PathVariable Long id, @RequestBody PacienteUpdateDTO dtoPaciente){
-        
-        pacienteService.modificarPacientePorId(id, dtoPaciente);
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> modificarPacientePorId(@RequestBody PacienteRequestDTO dtoPaciente, @PathVariable Long id){
+        pacienteService.modificarPacientePorId(dtoPaciente, id);
        
         return ResponseEntity.ok("Paciente modificado correctamente");
 

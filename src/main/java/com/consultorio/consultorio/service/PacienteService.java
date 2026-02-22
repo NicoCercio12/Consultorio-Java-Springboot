@@ -4,13 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.consultorio.consultorio.dto.PacienteRequestDTO;
 import com.consultorio.consultorio.dto.PacienteResponseDTO;
-import com.consultorio.consultorio.dto.PacienteUpdateDTO;
 import com.consultorio.consultorio.model.Paciente;
 import com.consultorio.consultorio.repository.PacienteRepository;
+
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 
 @Service
+@Transactional
 public class PacienteService {
 
     @Autowired
@@ -59,36 +62,33 @@ public class PacienteService {
 
     //Modificar Paciente por id
 
-    public void modificarPacientePorId(Long id, PacienteUpdateDTO dtoPaciente){
+    public void modificarPacientePorId(PacienteRequestDTO dtoPaciente, Long id){
 
         Paciente paciente = repoPaciente.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
         if(dtoPaciente.getNombre() != null){ //Solo me aseguro de settear si no esta vacio (medio robusto con ifs, pero bueno)
-            dtoPaciente.setNombre(paciente.getNombre());
+            paciente.setNombre(dtoPaciente.getNombre());
         }
 
         if(dtoPaciente.getApellido() != null) {
-            dtoPaciente.setApellido(paciente.getApellido());
+            paciente.setApellido(dtoPaciente.getApellido());
         }
 
         if(dtoPaciente.getDni() != null){ //No creo usarlo, pero lo dejo qsyo :P
-            dtoPaciente.setDni(paciente.getDni());
+            paciente.setDni(dtoPaciente.getDni());
         }
 
         if(dtoPaciente.getNroTelefono() != null){
-            dtoPaciente.setNroTelefono(paciente.getNroTelefono());
+            paciente.setNroTelefono(dtoPaciente.getNroTelefono());
         }
 
         if(dtoPaciente.getFechaNacimiento() != null) {
-            dtoPaciente.setFechaNacimiento(paciente.getFechaNacimiento()); //OBVIAMENTE lo hago por si el paciente se equivoca al ingresar su fecha de nacimiento
+            paciente.setFechaNacimiento(dtoPaciente.getFechaNacimiento()); //OBVIAMENTE lo hago por si el paciente se equivoca al ingresar su fecha de nacimiento
         }
         
         if(dtoPaciente.getObraSocial() != null){
-            dtoPaciente.setObraSocial(paciente.getObraSocial());
+            paciente.setObraSocial(dtoPaciente.getObraSocial());
         }
-
-        repoPaciente.save(paciente);
-
     }
 
     //Eliminar Paciente por id

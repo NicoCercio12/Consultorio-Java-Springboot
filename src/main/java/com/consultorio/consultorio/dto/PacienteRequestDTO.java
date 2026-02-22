@@ -2,14 +2,20 @@ package com.consultorio.consultorio.dto;
 
 import java.time.LocalDate;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 //Lo utilizo para crear pacientes
 
 public class PacienteRequestDTO {
 
+    @NotNull
     private String nombre;
+    @NotNull
     private String apellido;
+    @NotNull
     private Long dni;
     private String nroTelefono;
+    @NotNull
     private LocalDate fechaNacimiento;
     private String obraSocial;
 

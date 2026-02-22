@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.consultorio.consultorio.repository.TurnoRepository;
+import jakarta.transaction.Transactional;
 import com.consultorio.consultorio.model.Paciente;
 import com.consultorio.consultorio.dto.TurnoRequestDTO;
 import com.consultorio.consultorio.dto.TurnoResponseDTO;
@@ -11,6 +12,7 @@ import com.consultorio.consultorio.model.Medico;
 import com.consultorio.consultorio.model.Turno;
 
 @Service
+@Transactional
 public class TurnoService {
 
     @Autowired
@@ -37,6 +39,8 @@ public class TurnoService {
         turno.setFechaHora(dtoTurno.getFechaHora());
         turno.setMedico(medico);
         turno.setPaciente(paciente);
+
+        repoTurno.save(turno);
 
     }
 
@@ -75,7 +79,7 @@ public class TurnoService {
             turno.setMedico(medico);
         }
 
-        if(turno.getPaciente() != null){
+        if(dtoTurno.getIdPaciente() != null){
             Paciente paciente = pacienteService.buscarEntidadPacientePorId(dtoTurno.getIdPaciente());
             turno.setPaciente(paciente);
         }

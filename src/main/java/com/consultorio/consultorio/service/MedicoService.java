@@ -9,7 +9,10 @@ import com.consultorio.consultorio.dto.MedicoResponseDTO;
 import com.consultorio.consultorio.model.Medico;
 import com.consultorio.consultorio.repository.MedicoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class MedicoService {
 
     @Autowired
@@ -35,9 +38,9 @@ public class MedicoService {
 
     }
 
-    //Buscar entidad por id
+    // Buscar entidad por id
 
-    public Medico buscarEntidadMedicoPorId(Long id){
+    public Medico buscarEntidadMedicoPorId(Long id) {
 
         return repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
 
@@ -63,37 +66,32 @@ public class MedicoService {
 
     public void modificarMedicoPorId(MedicoRequestDTO dtoMedico, Long id) {
 
-        Medico medico = repoMedico.findById(id).orElseThrow(() -> new RuntimeException("Medico no encontrado"));
-
-        // Me aseguro de que no esten estos campos vacíos (Recordar buscar una forma
-        // menos robusta de hacerlo)
+        Medico medico = repoMedico.findById(id)
+                .orElseThrow(() -> new RuntimeException("Medico no encontrado"));
 
         if (dtoMedico.getNombre() != null) {
-            dtoMedico.setNombre(medico.getNombre());
+            medico.setNombre(dtoMedico.getNombre());
         }
 
         if (dtoMedico.getApellido() != null) {
-            dtoMedico.setApellido(medico.getApellido());
+            medico.setApellido(dtoMedico.getApellido());
         }
 
         if (dtoMedico.getDni() != null) {
-            dtoMedico.setDni(medico.getDni());
+            medico.setDni(dtoMedico.getDni());
         }
 
         if (dtoMedico.getNroTelefono() != null) {
-            dtoMedico.setNroTelefono(medico.getNroTelefono());
+            medico.setNroTelefono(dtoMedico.getNroTelefono());
         }
 
         if (dtoMedico.getMatricula() != null) {
-            dtoMedico.setMatricula(medico.getMatricula());
+            medico.setMatricula(dtoMedico.getMatricula());
         }
 
         if (dtoMedico.getEspecialidad() != null) {
-            dtoMedico.setEspecialidad(medico.getEspecialidad());
+            medico.setEspecialidad(dtoMedico.getEspecialidad());
         }
-
-        repoMedico.save(medico);
-
     }
 
     // Eliminar medico por id

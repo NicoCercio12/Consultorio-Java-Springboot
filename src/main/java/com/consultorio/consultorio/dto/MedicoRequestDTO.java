@@ -1,14 +1,21 @@
 package com.consultorio.consultorio.dto;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 //Utilizado para crear medicos
 
 public class MedicoRequestDTO {
 
+    @NotNull
     private String nombre;
+    @NotNull
     private String apellido;
+    @NotNull
     private Long dni;
     private String nroTelefono;
+    @NotNull
     private String matricula;
+    @NotNull
     private String especialidad;
    
     public MedicoRequestDTO(){} //Me habia olvidado de agregarlo

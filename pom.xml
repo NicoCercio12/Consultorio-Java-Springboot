@@ -40,12 +40,17 @@
             <version>3.45.1.0</version>
         </dependency>
 
-        <!-- PostgreSQL JDBC (RAILWAY) -->
+
+     <!-- COMENTADO temporal - vuelve SQLite -->
+     <!--
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+         <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <scope>runtime</scope>
+       </dependency>
+      -->
+
+
 
         <!-- Hibernate SQLite Dialect -->
         <dependency>

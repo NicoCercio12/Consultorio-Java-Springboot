@@ -2,55 +2,189 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Consultorio</title>
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS propio -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultorio - Gestión Médica</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-
-<div class="container py-5">
-
-    <h1 class="text-center mb-4 text-white">Consultorio Médico</h1>
-
-    <!-- TURNOS -->
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            Turnos
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">
+                <i class="fas fa-hospital"></i>
+                Consultorio Médico
+            </h1>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="mostrarSeccion('medicos')">
+                    <i class="fas fa-user-md"></i> Médicos
+                </button>
+                <button class="nav-btn" onclick="mostrarSeccion('pacientes')">
+                    <i class="fas fa-user-injured"></i> Pacientes
+                </button>
+                <button class="nav-btn" onclick="mostrarSeccion('turnos')">
+                    <i class="fas fa-calendar-check"></i> Turnos
+                </button>
+            </div>
         </div>
-        <div class="card-body">
-            <button class="btn btn-primary mb-3" onclick="cargarTurnos()">Ver turnos</button>
-            <ul id="listaTurnos" class="list-group"></ul>
-        </div>
+    </nav>
+
+    <main class="main-container">
+        <!-- MÉDICOS -->
+        <section id="medicos" class="section active">
+            <div class="grid-container">
+                <div class="form-card">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-md"></i> Gestión de Médicos
+                    </h2>
+                    <form id="formMedico">
+                        <div class="input-group">
+                            <label>Nombre *</label>
+                            <input type="text" id="medicoNombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido *</label>
+                            <input type="text" id="medicoApellido" required>
+                        </div>
+                        <div class="input-group">
+                            <label>DNI *</label>
+                            <input type="text" id="medicoDni" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="text" id="medicoTelefono">
+                        </div>
+                        <div class="input-group">
+                            <label>Matrícula *</label>
+                            <input type="text" id="medicoMatricula" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Especialidad *</label>
+                            <input type="text" id="medicoEspecialidad" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Agregar Médico
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="limpiarForm('medico')">
+                                Limpiar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="list-card">
+                    <div class="list-header">
+                        <h3>Lista de Médicos</h3>
+                        <button class="btn-refresh" onclick="cargarMedicos()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                    <div id="listaMedicos" class="list-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PACIENTES -->
+        <section id="pacientes" class="section hidden">
+            <div class="grid-container">
+                <div class="form-card">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-injured"></i> Gestión de Pacientes
+                    </h2>
+                    <form id="formPaciente">
+                        <div class="input-group">
+                            <label>Nombre *</label>
+                            <input type="text" id="pacienteNombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido *</label>
+                            <input type="text" id="pacienteApellido" required>
+                        </div>
+                        <div class="input-group">
+                            <label>DNI *</label>
+                            <input type="text" id="pacienteDni" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="text" id="pacienteTelefono">
+                        </div>
+                        <div class="input-group">
+                            <label>Fecha Nacimiento</label>
+                            <input type="date" id="pacienteFechaNac">
+                        </div>
+                        <div class="input-group">
+                            <label>Obra Social</label>
+                            <input type="text" id="pacienteObraSocial">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Agregar Paciente
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="limpiarForm('paciente')">
+                                Limpiar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="list-card">
+                    <div class="list-header">
+                        <h3>Lista de Pacientes</h3>
+                        <button class="btn-refresh" onclick="cargarPacientes()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                    <div id="listaPacientes" class="list-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TURNOS -->
+        <section id="turnos" class="section hidden">
+            <div class="grid-container">
+                <div class="form-card">
+                    <h2 class="card-title">
+                        <i class="fas fa-calendar-check"></i> Gestión de Turnos
+                    </h2>
+                    <form id="formTurno">
+                        <div class="input-group">
+                            <label>ID Paciente *</label>
+                            <input type="number" id="turnoPacienteId" required>
+                        </div>
+                        <div class="input-group">
+                            <label>ID Médico *</label>
+                            <input type="number" id="turnoMedicoId" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Fecha y Hora *</label>
+                            <input type="datetime-local" id="turnoFecha" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Crear Turno
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="limpiarForm('turno')">
+                                Limpiar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="list-card">
+                    <div class="list-header">
+                        <h3>Lista de Turnos</h3>
+                        <button class="btn-refresh" onclick="cargarTurnos()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                    <div id="listaTurnos" class="list-container"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+        <button onclick="cerrarToast()">&times;</button>
     </div>
 
-    <!-- PACIENTES -->
-    <div class="card mb-4">
-        <div class="card-header bg-success text-white">
-            Pacientes
-        </div>
-        <div class="card-body">
-            <button class="btn btn-success mb-3" onclick="cargarPacientes()">Ver pacientes</button>
-            <ul id="listaPacientes" class="list-group"></ul>
-        </div>
-    </div>
-
-    <!-- MEDICOS -->
-    <div class="card mb-4">
-        <div class="card-header bg-warning text-dark">
-            Médicos
-        </div>
-        <div class="card-body">
-            <button class="btn btn-warning mb-3" onclick="cargarMedicos()">Ver médicos</button>
-            <ul id="listaMedicos" class="list-group"></ul>
-        </div>
-    </div>
-
-</div>
-
-<script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

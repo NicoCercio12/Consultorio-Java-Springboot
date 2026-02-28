@@ -89,6 +89,8 @@ public class PacienteService {
         if(dtoPaciente.getObraSocial() != null){
             paciente.setObraSocial(dtoPaciente.getObraSocial());
         }
+
+        repoPaciente.save(paciente);
     }
 
     //Eliminar Paciente por id

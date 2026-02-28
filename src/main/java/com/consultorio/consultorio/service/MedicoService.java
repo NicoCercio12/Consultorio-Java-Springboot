@@ -92,6 +92,8 @@ public class MedicoService {
         if (dtoMedico.getEspecialidad() != null) {
             medico.setEspecialidad(dtoMedico.getEspecialidad());
         }
+
+        repoMedico.save(medico);
     }
 
     // Eliminar medico por id

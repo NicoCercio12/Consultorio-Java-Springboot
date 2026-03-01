@@ -13,4 +13,5 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     boolean existsByMedicoAndFechaHora(Medico medico, LocalDateTime fechaHora);
 
+
 }

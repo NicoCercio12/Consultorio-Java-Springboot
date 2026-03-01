@@ -95,7 +95,13 @@ public class TurnoService {
             throw new RuntimeException("Turno no encontrado");
         }
 
+        try {
+
         repoTurno.deleteById(id);
+
+        } catch(Exception e){
+            throw new RuntimeException("Error al eliminar turno" + e.getMessage());
+        }
     }
 
 

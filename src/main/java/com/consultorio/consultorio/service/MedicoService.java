@@ -1,13 +1,17 @@
 package com.consultorio.consultorio.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.consultorio.consultorio.dto.MedicoRequestDTO;
 import com.consultorio.consultorio.dto.MedicoResponseDTO;
 import com.consultorio.consultorio.model.Medico;
+import com.consultorio.consultorio.model.Turno;
 import com.consultorio.consultorio.repository.MedicoRepository;
+import com.consultorio.consultorio.repository.TurnoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,6 +21,9 @@ public class MedicoService {
 
     @Autowired
     private MedicoRepository repoMedico;
+
+    @Autowired
+    private TurnoRepository repoTurno;
 
     // Crear medico
 
@@ -102,6 +109,12 @@ public class MedicoService {
         if (!repoMedico.existsById(id)) {
             throw new RuntimeException("Medico no encontrado");
         }
+
+        //Para evitar bugs en turno
+        List<Turno> turnoMedico= repoTurno.findAll().stream()
+        .filter(t -> t.getPaciente() != null && t.getMedico().getIdPersona() == id)
+        .collect(Collectors.toList());
+        repoTurno.deleteAll(turnoMedico);;
 
         repoMedico.deleteById(id);
     }
